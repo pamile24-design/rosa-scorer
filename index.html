@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ROSA Scorer</title>
+<meta name="description" content="Score a single Rapid Office Strain Assessment (ROSA) workstation, with every chart lookup shown.">
+<meta name="theme-color" content="#1d5f7c">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,600&family=Public+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div>
+      <h1>ROSA Scorer</h1>
+      <p class="muted small">One workstation at a time. Scoring charts checked against the ROSA worksheet (Sonne, Villalta &amp; Andrews, 2012).</p>
+    </div>
+    <span class="net" id="net" hidden>Offline — still works</span>
+  </header>
+
+  <section class="card idcard">
+    <div class="idrow">
+      <label for="pid">Participant ID</label>
+      <input id="pid" placeholder="e.g. SEC-014" autocomplete="off">
+    </div>
+    <div class="seg" role="tablist" aria-label="Entry mode">
+      <button role="tab" id="m-check" aria-selected="true">Checklist</button>
+      <button role="tab" id="m-scores" aria-selected="false">I have area scores</button>
+    </div>
+    <p class="small muted" id="modeHint"></p>
+  </section>
+
+  <div id="form"></div>
+
+  <section class="card" id="result" aria-live="polite"></section>
+
+  <section class="card">
+    <div class="rowhead">
+      <h2>Saved entries <span class="count" id="savedCount">0</span></h2>
+      <div class="toolbar">
+        <button class="btn" id="exportCsv">Download CSV</button>
+        <button class="btn" id="copyRows">Copy</button>
+      </div>
+    </div>
+    <p class="small muted">Saved on this device only. Download the CSV and open it in the batch ROSA Scorer, Excel or SPSS.</p>
+    <div class="tablewrap"><table class="saved" id="saved"></table></div>
+    <div id="clearWrap" class="toolbar" style="margin-top:10px"><button class="btn ghost danger" id="clearSaved">Delete all saved entries</button></div>
+  </section>
+
+  <details class="card settings">
+    <summary>Settings: risk levels and chart limits</summary>
+    <div class="settings-body">
+      <p class="small muted">The ROSA worksheet gives no risk bands. The developers suggested a final score of 5 as the level at which change is needed. Set the cut-points to match the source your supervisor accepts.</p>
+      <div class="tiers">
+        <div><span class="chip low">Low</span> <span class="num">1 to</span> <input id="cutLow" type="number" min="1" max="8" inputmode="numeric" aria-label="Upper limit of low risk"></div>
+        <div><span class="chip medium">Medium</span> <span class="num" id="medFrom"></span> <input id="cutMed" type="number" min="2" max="9" inputmode="numeric" aria-label="Upper limit of medium risk"></div>
+        <div><span class="chip high">High</span> <span class="num" id="highFrom"></span></div>
+        <p id="tierErr" class="small err-text"></p>
+      </div>
+      <h3>Monitor score beyond Chart B</h3>
+      <p class="small muted">Monitor 7 with a +1 duration gives 8, but Chart B stops at 7. The worksheet does not say what to do.</p>
+      <label class="opt"><input type="radio" name="overflow" value="flag"> <span>Leave unscored and flag it</span></label>
+      <label class="opt"><input type="radio" name="overflow" value="cap"> <span>Use Chart B's last column (7) and mark it as capped</span></label>
+    </div>
+  </details>
+
+  <footer class="small muted">
+    <p>Sonne, M., Villalta, D. L., &amp; Andrews, D. M. (2012). Development and evaluation of an office ergonomic risk checklist: ROSA – Rapid Office Strain Assessment. <i>Applied Ergonomics, 43</i>(1), 98–108. https://doi.org/10.1016/j.apergo.2011.03.008</p>
+    <p>ROSA screens workstation risk. A score does not diagnose a musculoskeletal disorder.</p>
+  </footer>
+</div>
+
+<div class="bar" id="bar">
+  <div class="bar-score"><span class="lab">ROSA</span> <span class="n" id="barN">–</span> <span id="barChip"></span></div>
+  <div class="bar-actions">
+    <button class="btn ghost" id="newEntry">New</button>
+    <button class="btn primary" id="saveEntry">Save entry</button>
+  </div>
+</div>
+<div class="toast" id="toast" hidden role="status"></div>
+
+<script src="engine.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

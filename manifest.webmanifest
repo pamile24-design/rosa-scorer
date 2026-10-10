@@ -1,0 +1,12 @@
+{
+  "name": "ROSA Scorer",
+  "short_name": "ROSA",
+  "description": "Score a single Rapid Office Strain Assessment (ROSA) workstation.",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#f6f8f7",
+  "theme_color": "#1d5f7c",
+  "icons": [
+    { "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
+  ]
+}
